@@ -24,9 +24,9 @@ const getAllStates = async (req, res) => {
 
 const getContiguousStates = async (req, res) => {
     try {
-        // Filter contiguous states (not AK or HI)
+        // not AK or HI
         const contiguousStates = states.filter(state => !['AK', 'HI'].includes(state.code));
-        // Return contiguous states as the response
+        // Return contiguous states
         res.json(contiguousStates);
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -37,7 +37,7 @@ const getNonContiguousStates = async (req, res) => {
     try {
         // Filter non-contiguous states (AK or HI)
         const nonContiguousStates = states.filter(state => ['AK', 'HI'].includes(state.code));
-        // Return non-contiguous states as the response
+        // Return non-contig
         res.json(nonContiguousStates);
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -55,12 +55,12 @@ const getStateByCode = (req, res) => {
     // Find the state object with matching code in the states array
     const state = states.find(state => state.code === stateCode);
 
-    // If state is not found, return 404 status with an error message
+    // If state is not found, return 404
     if (!state) {
         return res.status(404).json({ message: `State with code ${stateCode} not found` });
     }
 
-    // If state is found, return it as JSON response
+    // If state is found, return JSON 
     res.json(state);
 }
 
@@ -134,18 +134,18 @@ const getStateAdmissionDate = async (req, res) => {
 
 const addFunFact = async (req, res) => {
     const stateCode = req.params.state;
-    console.log('State Code:', stateCode); // Log the state code extracted from the request parameters
+    console.log('State Code:', stateCode); // Log state code extracted from the request parameters
     const { funfacts } = req.body;
-    console.log('Fun Facts:', funfacts); // Log the fun facts received in the request body
+    console.log('Fun Facts:', funfacts); // Log fun facts received in the request body
     try {
         const state = await State.findOneAndUpdate(
             { stateCode },
             { $push: { funfacts: { $each: funfacts } } },
             { new: true }
         );
-        console.log('State:', state); // Log the state retrieved from the database
+        console.log('State:', state); // Log state retrieved from the database
         if (!state) {
-            console.log('State not found'); // Log if the state is not found
+            console.log('State not found'); // Log if  state is not found
             return res.status(404).json({ message: 'State not found.' });
         }
         res.json(state);
