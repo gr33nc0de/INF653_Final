@@ -154,13 +154,14 @@ const getStateAdmissionDate = async (req, res) => {
             return res.status(404).json({ message: 'Invalid state abbreviation parameter' });
         }
 
-        // Send the response with state admission date
-        res.status(200).json({ state: localState.state, admission_date: localState.admission_date });
+        // Send the response with state admission date under the key "admitted"
+        res.status(200).json({ state: localState.state, admitted: localState.admission_date });
     } catch (error) {
         console.error('Error getting state admission date:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 };
+
 
 
 // Add a fun fact

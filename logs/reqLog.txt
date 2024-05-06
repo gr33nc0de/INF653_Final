@@ -86,3 +86,12 @@
 20240506	15:19:42	ed73ccf3-1f2a-476d-92f4-47d9c2dcb21c	GET	undefined	/states/anything_not_a_state_code/nickname
 20240506	15:23:53	3e4d34b4-234f-4be4-83d3-5e950ae15c39	GET	undefined	/states/NY/population
 20240506	15:25:29	3d656dec-e346-4129-9eb4-7e7e51dc107a	GET	undefined	/states/NY/population
+20240506	15:26:15	391f2f6d-dbc7-4670-95d6-9951d1559149	GET	undefined	/states/ny/population
+20240506	15:26:17	661b0122-5004-4821-93fb-22e45aa5113a	GET	undefined	/states/Ny/population
+20240506	15:26:19	7793b636-2a20-4670-ac53-7b7cd596b71a	GET	undefined	/states/NY/population
+20240506	15:26:24	f109cd93-2f37-4e0f-b4dc-644f0862bc9e	GET	undefined	/states/ks/population
+20240506	15:26:26	7628dfdf-9abc-4abe-94e3-e5eb420bc816	GET	undefined	/states/KS/population
+20240506	15:26:28	8bcc4948-6902-4c6f-b299-0b7def62d5d4	GET	undefined	/states/kS/population
+20240506	15:26:30	c5c02b23-62aa-4faa-9e4a-a15480dffbc7	GET	undefined	/states/Ks/population
+20240506	15:27:00	2ae49495-e994-4139-bb60-82331d17da87	GET	undefined	/states/KS/admission
+20240506	15:28:25	b0f07f79-2560-4138-8d59-a4716d675d34	GET	undefined	/states/KS/admission
