@@ -50,17 +50,17 @@ const getStateByCode = async (req, res) => {
         const localState = require('../model/statesData.json').find(state => state.code === stateCode);
 
         if (!localState) {
-            return res.status(404).json({ message: 'State not found.' });
+            return res.status(404).json({ message: 'Invalid state abbreviation parameter' });
         }
 
         // Retrieve fun facts for the state from MongoDB
         const foundFact = await State.findOne({ code: stateCode }, { _id: 0, funfacts: 1 });
 
         // Merge state data with fun facts
-        if (foundFact) {
-            localState.funfacts = foundFact.funfacts || [];
+        if (foundFact && foundFact.funfacts.length > 0) {
+            localState.funfacts = foundFact.funfacts;
         } else {
-            localState.funfacts = [];
+            delete localState.funfacts; // Remove the empty funfacts array
         }
 
         // Send the response with state data
@@ -70,6 +70,7 @@ const getStateByCode = async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 };
+
 
 
 // Get random fun fact for a state
