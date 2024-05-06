@@ -239,7 +239,6 @@ const addFunFact = async (req, res) => {
 
 
 
-// Update a fun fact
 const updateFunFact = async (req, res) => {
     try {
         const stateCode = req.params.state;
@@ -247,8 +246,13 @@ const updateFunFact = async (req, res) => {
         const newFunFact = req.body.funfact;
 
         // Check if index and new fun fact are provided
-        if (!index || !newFunFact) {
-            return res.status(400).json({ message: 'Index and new fun fact must be provided.' });
+        if (!index) {
+            return res.status(400).json({ message: 'State fun fact index value required' });
+        }
+
+        // Check if new fun fact is provided and is a non-empty string
+        if (!newFunFact || typeof newFunFact !== 'string' || newFunFact.trim() === '') {
+            return res.status(400).json({ message: 'State fun fact value required' });
         }
 
         // Adjust the index to be zero-based
@@ -259,7 +263,10 @@ const updateFunFact = async (req, res) => {
 
         // If state not found, return error message
         if (!state) {
-            return res.status(404).json({ message: `No state found for ${stateCode}` });
+            // Retrieve the state name from the local JSON file
+            const localState = require('../model/statesData.json').find(state => state.code === stateCode);
+            const stateName = localState ? localState.state : stateCode;
+            return res.status(404).json({ message: `No Fun Facts found for ${stateName}` });
         }
 
         // Check if the state has fun facts
@@ -269,7 +276,7 @@ const updateFunFact = async (req, res) => {
 
         // Check if the provided index is valid
         if (adjustedIndex < 0 || adjustedIndex >= state.funfacts.length) {
-            return res.status(400).json({ message: `No Fun Fact found at that index for ${state.state}` });
+            return res.status(404).json({ message: `No Fun Fact found at that index for ${state.state}` });
         }
 
         // Update the fun fact at the specified index
@@ -283,6 +290,8 @@ const updateFunFact = async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 };
+
+
 
 
 const deleteFunFact = async (req, res) => {
