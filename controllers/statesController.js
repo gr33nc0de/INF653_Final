@@ -287,6 +287,17 @@ const updateFunFact = async (req, res) => {
 
 const deleteFunFact = async (req, res) => {
     try {
+
+        let index = req.body.index;
+
+        // Check if index is provided
+        if (!index) {
+            return res.status(400).json({ message: 'State fun fact index value required' });
+        }
+
+        // Adjust the index to be zero-based
+        index--;
+
         const stateCode = req.params.state;
 
         // Retrieve the state from MongoDB
@@ -299,16 +310,6 @@ const deleteFunFact = async (req, res) => {
             const stateName = stateData ? stateData.state : stateCode;
             return res.status(404).json({ message: `No Fun Facts found for ${stateName}` });
         }
-
-        let index = req.body.index;
-
-        // Check if index is provided
-        if (!index) {
-            return res.status(400).json({ message: 'State fun fact index value required' });
-        }
-
-        // Adjust the index to be zero-based
-        index--;
 
         // Check if index is valid
         if (index < 0 || index >= state.funfacts.length) {
