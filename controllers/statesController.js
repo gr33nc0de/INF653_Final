@@ -97,15 +97,25 @@ async function getStateAdmissionDate(req, res) {
     // Implement function logic here
 }
 
-//Add a fun fact
+// Add a fun fact
 const addFunFact = async (req, res) => {
     try {
         const stateCode = req.params.state;
         const funfacts = req.body.funfacts;
 
-        // Check if funfacts is provided and is an array
-        if (!Array.isArray(funfacts) || funfacts.length === 0) {
-            return res.status(400).json({ message: 'Fun facts must be provided as a non-empty array.' });
+        // Check if funfacts is provided
+        if (!funfacts) {
+            return res.status(400).json({ message: 'State fun facts value required' });
+        }
+
+        // Check if funfacts is an array
+        if (!Array.isArray(funfacts)) {
+            return res.status(400).json({ message: 'State fun facts value must be an array' });
+        }
+
+        // Check if funfacts array is empty
+        if (funfacts.length === 0) {
+            return res.status(400).json({ message: 'State fun facts value required' });
         }
 
         // Update the MongoDB collection
@@ -134,6 +144,7 @@ const addFunFact = async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 };
+
 
 
 

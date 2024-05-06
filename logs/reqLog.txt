@@ -53,3 +53,13 @@
 20240506	14:21:26	fbbc8307-2eaa-426e-9bef-b214cb9220aa	GET	undefined	/states/?contig=false
 20240506	14:26:19	04acccf0-9e54-462d-a1b6-d19438eb7c46	GET	undefined	/states/?contig=false
 20240506	14:26:22	bd1d99fa-d58b-4f7d-9c5a-e2d7320ddb7e	GET	undefined	/states/
+20240506	14:46:21	0c7d06d3-ca1f-45bb-9f4d-1cfc22665752	GET	undefined	/states/TX/funfact
+20240506	14:46:45	cb0c3fc9-a38b-4ee8-b25a-3322d9c07b11	POST	undefined	/states/TX/funfact
+20240506	14:47:45	737df580-2860-4f9c-8cc7-5f1749288ddb	POST	undefined	/states/TX/funfact
+20240506	14:49:40	aa2cb4b8-010f-4f75-9c5e-cde9a3173176	POST	undefined	/states/TX/funfact
+20240506	14:49:56	941794f4-ce46-4928-9753-4be4aad10095	POST	undefined	/states/TX/funfact
+20240506	14:50:28	40c43dc6-e316-416f-816c-f1dc1c8a53e4	POST	undefined	/states/TX/funfact
+20240506	14:53:09	127cc579-db61-462a-a178-119c1e6e92dd	GET	undefined	/states/MI/funfact
+20240506	14:53:27	95af7886-ac14-48ad-bc60-3ae70e4aef9f	GET	undefined	/states/MI/funfact
+20240506	14:54:15	4731fa2e-6df2-4bd5-a967-d3eb5b6f80e6	GET	undefined	/states/MI/funfact
+20240506	14:54:27	24dec655-5b50-4af5-84f5-2599f89c8b2d	GET	undefined	/states/KS/funfact
