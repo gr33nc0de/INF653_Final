@@ -1,198 +1,192 @@
-const path = require('path');
-const fs = require('fs');
-
+// Import necessary modules
 const State = require('../model/States');
-const statesDataPath = path.join(__dirname, '../model/statesData.json');
-let states;
 
-// Read and parse the statesData.json file
-try {
-    const statesData = fs.readFileSync(statesDataPath, 'utf8');
-    states = JSON.parse(statesData);
-} catch (err) {
-    console.error('Error reading statesData.json:', err);
-}
+// Data object
+const data = {
+    states: require('../model/statesData.json'),
+    setStates: function(data) { this.states = data }
+};
 
+// Get all States
 const getAllStates = async (req, res) => {
     try {
-        // Return the states data as the response
-        res.json(states);
+        // Fetch states data
+        const states = data.states;
+        
+        // Fetch all fun facts from MongoDB
+        const funFacts = await State.find({}, 'state funfacts');
+        console.log('Fun Facts:', funFacts); // Log fun facts for debugging
+
+        // Map fun facts to states
+        const combinedData = states.map(state => {
+            const stateCode = state.code;
+            const stateFunFacts = funFacts
+                .filter(fact => fact.state.toLowerCase() === state.name.toLowerCase())
+                .flatMap(fact => fact.funfacts);
+            return { ...state, funfacts: stateFunFacts };
+        });
+
+        // Send response
+        res.json(combinedData);
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        console.error('Error fetching all states:', err);
+        res.status(500).json({ error: 'Internal server error' });
     }
-}
+};
 
-const getContiguousStates = async (req, res) => {
-    try {
-        // not AK or HI
-        const contiguousStates = states.filter(state => !['AK', 'HI'].includes(state.code));
-        // Return contiguous states
-        res.json(contiguousStates);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-}
+// Get states data based on contiguity
+async function getStatesByContiguity(req, res) {
+    const { contig } = req.query;
+    let statesData = [];
 
-const getNonContiguousStates = async (req, res) => {
-    try {
-        // Filter non-contiguous states (AK or HI)
-        const nonContiguousStates = states.filter(state => ['AK', 'HI'].includes(state.code));
-        // Return non-contig
-        res.json(nonContiguousStates);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-}
-
-const getStateByCode = (req, res) => {
-
-    console.log("Reached function")
-    // Extract state code from request parameters
-    const stateCode = req.params.stateCode;
-
-    console.log(stateCode);
-    
-    // Find the state object with matching code in the states array
-    const state = states.find(state => state.code === stateCode);
-
-    // If state is not found, return 404
-    if (!state) {
-        return res.status(404).json({ message: `State with code ${stateCode} not found` });
+    if (contig === 'true') {
+        // Get contiguous states data
+        statesData = data.states.filter(state => !['AK', 'HI'].includes(state.stateCode));
+    } else if (contig === 'false') {
+        // Get non-contiguous states data
+        statesData = data.states.filter(state => ['AK', 'HI'].includes(state.stateCode));
+    } else {
+        // Invalid query parameter
+        return res.status(400).json({ error: 'Invalid query parameter value. Use "true" or "false".' });
     }
 
-    // If state is found, return JSON 
-    res.json(state);
+    // Send response
+    res.json(statesData);
 }
 
-
-const getRandomFunFact = async (req, res) => {
-    const stateCode = req.params.stateCode;
-    try {
-        const state = await State.findOne({ stateCode });
-        if (!state || !state.funfacts || state.funfacts.length === 0) {
-            return res.status(404).json({ message: 'No fun facts found for this state.' });
-        }
-        const randomIndex = Math.floor(Math.random() * state.funfacts.length);
-        const randomFunFact = state.funfacts[randomIndex];
-        res.json({ funfact: randomFunFact });
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
+// Get state data by state code
+async function getStateByCode(req, res) {
+    // Implement function logic here
 }
 
-const getStateCapital = async (req, res) => {
-    const stateCode = req.params.stateCode;
-    try {
-        const state = await State.findOne({ stateCode });
-        if (!state) {
-            return res.status(404).json({ message: 'State not found.' });
-        }
-        res.json({ state: state.stateName, capital: state.capital });
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
+// Get random fun fact for a state
+async function getRandomFunFact(req, res) {
+    // Implement function logic here
 }
 
-const getStateNickname = async (req, res) => {
-    const stateCode = req.params.stateCode;
-    try {
-        const state = await State.findOne({ stateCode });
-        if (!state) {
-            return res.status(404).json({ message: 'State not found.' });
-        }
-        res.json({ state: state.stateName, nickname: state.nickname });
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
+// Get state capital
+async function getStateCapital(req, res) {
+    // Implement function logic here
 }
 
-const getStatePopulation = async (req, res) => {
-    const stateCode = req.params.stateCode;
-    try {
-        const state = await State.findOne({ stateCode });
-        if (!state) {
-            return res.status(404).json({ message: 'State not found.' });
-        }
-        res.json({ state: state.stateName, population: state.population });
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
+// Get state nickname
+async function getStateNickname(req, res) {
+    // Implement function logic here
 }
 
-const getStateAdmissionDate = async (req, res) => {
-    const stateCode = req.params.stateCode;
-    try {
-        const state = await State.findOne({ stateCode });
-        if (!state) {
-            return res.status(404).json({ message: 'State not found.' });
-        }
-        res.json({ state: state.stateName, admitted: state.admissionDate });
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
+// Get state population
+async function getStatePopulation(req, res) {
+    // Implement function logic here
 }
 
+// Get state admission date
+async function getStateAdmissionDate(req, res) {
+    // Implement function logic here
+}
+
+// Add funFact
 const addFunFact = async (req, res) => {
-    const stateCode = req.params.state;
-    console.log('State Code:', stateCode); // Log state code extracted from the request parameters
-    const { funfacts } = req.body;
-    console.log('Fun Facts:', funfacts); // Log fun facts received in the request body
     try {
-        const state = await State.findOneAndUpdate(
-            { stateCode },
+        const stateCode = req.params.state;
+        console.log("Found stateCode: " + stateCode);
+        const funfacts = req.body.funfacts;
+        console.log("Found funfacts: " + funfacts);
+
+        // Check if funfacts is provided and is an array
+        if (!Array.isArray(funfacts) || funfacts.length === 0) {
+            return res.status(400).json({ message: 'Fun facts must be provided as a non-empty array.' });
+        }
+
+        // Update the MongoDB collection
+        const updatedState = await State.findOneAndUpdate(
+            { code: stateCode },
             { $push: { funfacts: { $each: funfacts } } },
+            { new: true, upsert: true }
+        );
+
+        // Send a success response
+        res.status(201).json({ message: 'Fun facts added successfully.', state: updatedState });
+    } catch (error) {
+        console.error('Error adding fun facts:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+
+// Update a fun fact
+const updateFunFact = async (req, res) => {
+    try {
+        const stateCode = req.params.state;
+        let index = req.body.index;
+        const newFunFact = req.body.funfact;
+
+        // Check if index and new fun fact are provided
+        if (!index || !newFunFact) {
+            return res.status(400).json({ message: 'Index and new fun fact must be provided.' });
+        }
+
+        // Adjust the index to make it zero-based
+        index--;
+
+        // Update the MongoDB collection
+        const updatedState = await State.findOneAndUpdate(
+            { code: stateCode },
+            { $set: { [`funfacts.${index}`]: newFunFact } },
             { new: true }
         );
-        console.log('State:', state); // Log state retrieved from the database
-        if (!state) {
-            console.log('State not found'); // Log if  state is not found
-            return res.status(404).json({ message: 'State not found.' });
-        }
-        res.json(state);
-    } catch (err) {
-        console.error('Error:', err); // Log any errors that occur during execution
-        res.status(500).json({ message: err.message });
+
+        // Send a success response
+        res.status(200).json({ message: 'Fun fact updated successfully.', state: updatedState });
+    } catch (error) {
+        console.error('Error updating fun fact:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
-}
+};
 
-
-
-const updateFunFact = async (req, res) => {
-    const stateCode = req.params.stateCode;
-    const { index, funfact } = req.body;
-    try {
-        const state = await State.findOne({ stateCode });
-        if (!state) {
-            return res.status(404).json({ message: 'State not found.' });
-        }
-        state.funfacts[index - 1] = funfact;
-        await state.save();
-        res.json(state);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-}
-
+// Delete a funfact
 const deleteFunFact = async (req, res) => {
-    const stateCode = req.params.stateCode;
-    const { index } = req.body;
     try {
-        const state = await State.findOne({ stateCode });
-        if (!state) {
-            return res.status(404).json({ message: 'State not found.' });
-        }
-        state.funfacts.splice(index - 1, 1);
-        await state.save();
-        res.json(state);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-}
+        const stateCode = req.params.state;
+        let index = req.body.index;
 
+        // Check if index is provided
+        if (!index) {
+            return res.status(400).json({ message: 'Index must be provided.' });
+        }
+
+        // Adjust the index to be zero-based
+        index--;
+
+        // Update the MongoDB collection
+        const updatedState = await State.findOneAndUpdate(
+            { code: stateCode },
+            { $unset: { [`funfacts.${index}`]: 1 } },
+            { new: true }
+        );
+
+        // Remove any potential null values from the funfacts array
+        await State.updateOne(
+            { code: stateCode },
+            { $pull: { funfacts: null } }
+        );
+
+        // Send a success response
+        res.status(200).json({ message: 'Fun fact deleted successfully.', state: updatedState });
+    } catch (error) {
+        console.error('Error deleting fun fact:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+
+
+
+
+
+// Export only the functions
 module.exports = {
     getAllStates,
-    getContiguousStates,
-    getNonContiguousStates,
+    getStatesByContiguity,
     getStateByCode,
     getRandomFunFact,
     getStateCapital,
@@ -202,4 +196,4 @@ module.exports = {
     addFunFact,
     updateFunFact,
     deleteFunFact
-}
+};

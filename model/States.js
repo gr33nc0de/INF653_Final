@@ -32,9 +32,10 @@ const stateSchema = new Schema({
     twitter_url: String,
     facebook_url: String,
     funfacts: {
-        type: [String], // Array of strings for fun facts
-        default: [] // Default value as an empty array
+        type: [String], // Array of strings
+        default: [] // Default value empty
     }
 });
 
 module.exports = mongoose.model('State', stateSchema);
+
