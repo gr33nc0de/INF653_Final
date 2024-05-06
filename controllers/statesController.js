@@ -87,7 +87,7 @@ const getStateCapital = async (req, res) => {
         const localState = require('../model/statesData.json').find(state => state.code === stateCode);
 
         if (!localState) {
-            return res.status(404).json({ message: 'Invalid state abbreviation parameter.' });
+            return res.status(404).json({ message: 'Invalid state abbreviation parameter' });
         }
 
         // Send the response with state capital
@@ -107,7 +107,7 @@ const getStateNickname = async (req, res) => {
         const localState = require('../model/statesData.json').find(state => state.code === stateCode);
 
         if (!localState) {
-            return res.status(404).json({ message: 'Invalid state abbreviation parameter.' });
+            return res.status(404).json({ message: 'Invalid state abbreviation parameter' });
         }
 
         // Send the response with state nickname
@@ -127,7 +127,7 @@ const getStatePopulation = async (req, res) => {
         const localState = require('../model/statesData.json').find(state => state.code === stateCode);
 
         if (!localState) {
-            return res.status(404).json({ message: 'Invalid state abbreviation parameter.' });
+            return res.status(404).json({ message: 'Invalid state abbreviation parameter' });
         }
 
         // Send the response with state population
@@ -147,7 +147,7 @@ const getStateAdmissionDate = async (req, res) => {
         const localState = require('../model/statesData.json').find(state => state.code === stateCode);
 
         if (!localState) {
-            return res.status(404).json({ message: 'Invalid state abbreviation parameter.' });
+            return res.status(404).json({ message: 'Invalid state abbreviation parameter' });
         }
 
         // Send the response with state admission date
