@@ -13,7 +13,7 @@ const stateSchema = new Schema({
     code: {
         type: String,
         required: true,
-        unique: true // Ensures uniqueness of state code
+        unique: true 
     },
     nickname: String,
     website: String,
