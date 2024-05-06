@@ -4,11 +4,11 @@ const Schema = mongoose.Schema;
 const stateSchema = new Schema({
     state: {
         type: String,
-        required: true
+        // required: true
     },
     slug: {
         type: String,
-        required: true
+        // required: true
     },
     code: {
         type: String,
