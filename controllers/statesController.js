@@ -35,26 +35,11 @@ const getAllStates = async (req, res) => {
     }
 };
 
-
-// Get states data based on contiguity
+// Get random fun fact for a state
 async function getStatesByContiguity(req, res) {
-    const { contig } = req.query;
-    let statesData = [];
-
-    if (contig === 'true') {
-        // Get contiguous states data
-        statesData = data.states.filter(state => !['AK', 'HI'].includes(state.stateCode));
-    } else if (contig === 'false') {
-        // Get non-contiguous states data
-        statesData = data.states.filter(state => ['AK', 'HI'].includes(state.stateCode));
-    } else {
-        // Invalid query parameter
-        return res.status(400).json({ error: 'Invalid query parameter value. Use "true" or "false".' });
-    }
-
-    // Send response
-    res.json(statesData);
+    // Implement function logic here
 }
+
 
 // Get state data by state code
 const getStateByCode = async (req, res) => {
