@@ -130,13 +130,17 @@ const getStatePopulation = async (req, res) => {
             return res.status(404).json({ message: 'Invalid state abbreviation parameter' });
         }
 
+        // Format population with correct comma placement
+        const formattedPopulation = localState.population.toLocaleString();
+
         // Send the response with state population
-        res.status(200).json({ state: localState.state, population: localState.population });
+        res.status(200).json({ state: localState.state, population: formattedPopulation });
     } catch (error) {
         console.error('Error getting state population:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 };
+
 
 // Get state admission date
 const getStateAdmissionDate = async (req, res) => {
