@@ -79,24 +79,85 @@ async function getRandomFunFact(req, res) {
 }
 
 // Get state capital
-async function getStateCapital(req, res) {
-    // Implement function logic here
-}
+const getStateCapital = async (req, res) => {
+    try {
+        const stateCode = req.params.state.toUpperCase(); // Ensure the state code is in uppercase
+
+        // Retrieve state data from local JSON file
+        const localState = require('../model/statesData.json').find(state => state.code === stateCode);
+
+        if (!localState) {
+            return res.status(404).json({ message: 'Invalid state abbreviation parameter.' });
+        }
+
+        // Send the response with state capital
+        res.status(200).json({ state: localState.state, capital: localState.capital_city });
+    } catch (error) {
+        console.error('Error getting state capital:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
 
 // Get state nickname
-async function getStateNickname(req, res) {
-    // Implement function logic here
-}
+const getStateNickname = async (req, res) => {
+    try {
+        const stateCode = req.params.state.toUpperCase(); // Ensure the state code is in uppercase
+
+        // Retrieve state data from local JSON file
+        const localState = require('../model/statesData.json').find(state => state.code === stateCode);
+
+        if (!localState) {
+            return res.status(404).json({ message: 'Invalid state abbreviation parameter.' });
+        }
+
+        // Send the response with state nickname
+        res.status(200).json({ state: localState.state, nickname: localState.nickname });
+    } catch (error) {
+        console.error('Error getting state nickname:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
 
 // Get state population
-async function getStatePopulation(req, res) {
-    // Implement function logic here
-}
+const getStatePopulation = async (req, res) => {
+    try {
+        const stateCode = req.params.state.toUpperCase(); // Ensure the state code is in uppercase
+
+        // Retrieve state data from local JSON file
+        const localState = require('../model/statesData.json').find(state => state.code === stateCode);
+
+        if (!localState) {
+            return res.status(404).json({ message: 'Invalid state abbreviation parameter.' });
+        }
+
+        // Send the response with state population
+        res.status(200).json({ state: localState.state, population: localState.population });
+    } catch (error) {
+        console.error('Error getting state population:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
 
 // Get state admission date
-async function getStateAdmissionDate(req, res) {
-    // Implement function logic here
-}
+const getStateAdmissionDate = async (req, res) => {
+    try {
+        const stateCode = req.params.state.toUpperCase(); // Ensure the state code is in uppercase
+
+        // Retrieve state data from local JSON file
+        const localState = require('../model/statesData.json').find(state => state.code === stateCode);
+
+        if (!localState) {
+            return res.status(404).json({ message: 'Invalid state abbreviation parameter.' });
+        }
+
+        // Send the response with state admission date
+        res.status(200).json({ state: localState.state, admission_date: localState.admission_date });
+    } catch (error) {
+        console.error('Error getting state admission date:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
 
 // Add a fun fact
 const addFunFact = async (req, res) => {

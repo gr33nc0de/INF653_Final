@@ -76,3 +76,9 @@
 20240506	15:03:05	be6c7ef3-9269-48e0-8ec6-f0e4ff5f6221	GET	undefined	/states/NH/
 20240506	15:03:28	57a7901f-2ab5-45dc-8548-c3fa7d37e9ea	GET	undefined	/states/NH/
 20240506	15:04:14	29d212a9-3d2a-4072-b865-c354661027aa	GET	undefined	/states/heyo/
+20240506	15:12:44	89f93274-31db-45c2-936c-05d443cac81b	GET	undefined	/states/KS/capital
+20240506	15:12:53	1b92e4df-48fa-477b-a377-c1b4d2044c6e	GET	undefined	/states/KS/nickname
+20240506	15:13:01	e9f104f1-ac0f-4937-9bf6-55613aad98e9	GET	undefined	/states/KS/population
+20240506	15:13:09	ca0fb809-c934-4f61-9252-017a6ab52583	GET	undefined	/states/KS/admisiondate
+20240506	15:13:15	60ab0930-f2ec-4ce4-bc26-8f7e0f07b302	GET	undefined	/states/KS/admissiondate
+20240506	15:13:16	c7a285a4-6f70-4592-bb1c-ba4d17f60572	GET	undefined	/states/KS/admission
