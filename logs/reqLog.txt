@@ -95,3 +95,13 @@
 20240506	15:26:30	c5c02b23-62aa-4faa-9e4a-a15480dffbc7	GET	undefined	/states/Ks/population
 20240506	15:27:00	2ae49495-e994-4139-bb60-82331d17da87	GET	undefined	/states/KS/admission
 20240506	15:28:25	b0f07f79-2560-4138-8d59-a4716d675d34	GET	undefined	/states/KS/admission
+20240506	15:33:33	989b5795-29f0-4247-b004-a31ed3b00233	GET	undefined	/states/ks/funfact
+20240506	15:33:42	debeaa6d-5f19-4138-8a05-9e11b0eae3f3	GET	undefined	/states/KS/funfact
+20240506	15:35:18	90e78a7f-c640-4bf0-874d-478104b490a5	GET	undefined	/states/KS/funfact
+20240506	15:35:21	d8a39362-8de6-4b30-85f5-0fe6e1ca4507	GET	undefined	/states/KS/funfacts
+20240506	15:35:25	e8b70454-c7b2-4ea0-9a36-689a9d84bd80	GET	undefined	/states/ks/funfact
+20240506	15:35:27	fd87b32c-4906-40cf-a599-db679c7a6754	GET	undefined	/states/Ks/funfact
+20240506	15:36:03	7148bcdc-7f96-4ee4-a83b-0eb1610c14e8	GET	undefined	/states/GA/funfact
+20240506	15:36:49	1ec4a62d-7edf-43a5-88bc-de783a76c90f	GET	undefined	/states/GA/funfact
+20240506	15:37:02	27c8a2be-db99-4096-9177-9b8bc3dae53d	GET	undefined	/states/anything_not_a_state_code/funfact
+20240506	15:37:44	cbc210f8-18e2-4af3-9198-48e8993bebac	GET	undefined	/states/anything_not_a_state_code/funfact

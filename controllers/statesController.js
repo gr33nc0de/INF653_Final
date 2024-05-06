@@ -74,10 +74,34 @@ const getStateByCode = async (req, res) => {
 
 
 // Get random fun fact for a state
-async function getRandomFunFact(req, res) {
-    // Implement function logic here
-}
+const getRandomFunFact = async (req, res) => {
+    try {
+        const stateCode = req.params.state.toUpperCase(); // Ensure the state code is in uppercase
 
+        // Retrieve state data from local JSON file
+        const localState = data.states.find(state => state.code === stateCode);
+
+        if (!localState) {
+            return res.status(404).json({ message: 'Invalid state abbreviation parameter' });
+        }
+
+        // Retrieve fun facts for the state from MongoDB
+        const stateData = await State.findOne({ code: stateCode });
+        if (!stateData || !stateData.funfacts || stateData.funfacts.length === 0) {
+            return res.status(404).json({ message: `No Fun Facts found for ${localState.state}` });
+        }
+
+        // Get a random fun fact
+        const randomIndex = Math.floor(Math.random() * stateData.funfacts.length);
+        const randomFunFact = stateData.funfacts[randomIndex];
+
+        // Send the response with the random fun fact
+        res.status(200).json({ funfact: randomFunFact });
+    } catch (error) {
+        console.error('Error getting random fun fact:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
 // Get state capital
 const getStateCapital = async (req, res) => {
     try {
