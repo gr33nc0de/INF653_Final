@@ -285,43 +285,52 @@ const updateFunFact = async (req, res) => {
 };
 
 
-
-
-// Delete a funfact
 const deleteFunFact = async (req, res) => {
     try {
         const stateCode = req.params.state;
+
+        // Retrieve the state from MongoDB
+        let state = await State.findOne({ code: stateCode });
+
+        // Check if state exists in MongoDB
+        if (!state) {
+            // Retrieve the full state name from local statesData.json
+            const stateData = data.states.find(state => state.code === stateCode);
+            const stateName = stateData ? stateData.state : stateCode;
+            return res.status(404).json({ message: `No Fun Facts found for ${stateName}` });
+        }
+
         let index = req.body.index;
 
         // Check if index is provided
         if (!index) {
-            return res.status(400).json({ message: 'Index must be provided.' });
+            return res.status(400).json({ message: 'State fun fact index value required' });
         }
 
         // Adjust the index to be zero-based
         index--;
 
-        // Update the MongoDB collection
-        const updatedState = await State.findOneAndUpdate(
-            { code: stateCode },
-            { $unset: { [`funfacts.${index}`]: 1 } },
-            { new: true }
-        );
+        // Check if index is valid
+        if (index < 0 || index >= state.funfacts.length) {
+            // Retrieve the full state name from local statesData.json
+            const stateData = data.states.find(state => state.code === stateCode);
+            const stateName = stateData ? stateData.state : stateCode;
+            return res.status(404).json({ message: `No Fun Fact found at that index for ${stateName}` });
+        }
 
-        // Remove any potential null values from the funfacts array
-        await State.updateOne(
-            { code: stateCode },
-            { $pull: { funfacts: null } }
-        );
+        // Remove the fun fact at the specified index
+        state.funfacts.splice(index, 1);
+
+        // Save the updated state
+        state = await state.save();
 
         // Send a success response
-        res.status(200).json({ message: 'Fun fact deleted successfully.', state: updatedState });
+        res.status(200).json({ message: 'Fun fact deleted successfully.', state });
     } catch (error) {
         console.error('Error deleting fun fact:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 };
-
 
 
 
