@@ -1,4 +1,4 @@
-// Import necessary modules
+// Import Model
 const State = require('../model/States');
 
 // Data object
@@ -7,13 +7,14 @@ const data = {
     setStates: function(data) { this.states = data }
 };
 
+
 // Get all states data
 const getAllStates = async (req, res) => {
     try {
-        // Retrieve all states from local JSON file
+        // get all states from local JSON 
         const localStates = require('../model/statesData.json');
 
-        // Retrieve all fun facts from MongoDB
+        // get all fun facts from MongoDB
         const funFacts = await State.find({}, { _id: 0, code: 1, funfacts: 1 });
 
         // Merge local states data with fun facts
@@ -27,7 +28,7 @@ const getAllStates = async (req, res) => {
             return localState;
         });
 
-        // Send the response with all states data
+        // Send response with all states data
         res.status(200).json(mergedStates);
     } catch (error) {
         console.error('Error getting all states data:', error);
@@ -35,19 +36,20 @@ const getAllStates = async (req, res) => {
     }
 };
 
+
 const getStatesByContiguity = async (req, res) => {
     try {
-        const isContiguous = req.params.isContiguous; // Get the isContiguous parameter
+        const isContiguous = req.params.isContiguous; // Get isContiguous 
 
-        // Retrieve all states from the local JSON file
+        // Get all states from local json
         const allStates = require('../model/statesData.json');
 
         if (isContiguous === 'true') {
-            // Filter out AK and HI for contiguous states
+            // Filter out AK and HI for contig
             const contiguousStates = allStates.filter(state => state.code !== 'AK' && state.code !== 'HI');
             return res.status(200).json(contiguousStates);
         } else if (isContiguous === 'false') {
-            // Filter out all states except AK and HI for non-contiguous states
+            // Filter out all states except AK and HI for non-contig
             const nonContiguousStates = allStates.filter(state => state.code === 'AK' || state.code === 'HI');
             return res.status(200).json(nonContiguousStates);
         } else {
@@ -60,31 +62,28 @@ const getStatesByContiguity = async (req, res) => {
 };
 
 
-
-
 // Get state data by state code
 const getStateByCode = async (req, res) => {
     try {
-        const stateCode = req.params.state.toUpperCase(); // Ensure the state code is in uppercase
+        const stateCode = req.params.state.toUpperCase(); 
 
-        // Retrieve state data from local JSON file
         const localState = require('../model/statesData.json').find(state => state.code === stateCode);
 
         if (!localState) {
             return res.status(404).json({ message: 'Invalid state abbreviation parameter' });
         }
 
-        // Retrieve fun facts for the state from MongoDB
+        // get fun facts for state from MongoDB
         const foundFact = await State.findOne({ code: stateCode }, { _id: 0, funfacts: 1 });
 
         // Merge state data with fun facts
         if (foundFact && foundFact.funfacts.length > 0) {
             localState.funfacts = foundFact.funfacts;
         } else {
-            delete localState.funfacts; // Remove the empty funfacts array
+            delete localState.funfacts; // Remove empty funfacts array
         }
 
-        // Send the response with state data
+        // Send response with state data
         res.status(200).json(localState);
     } catch (error) {
         console.error('Error getting state data by code:', error);
@@ -93,20 +92,18 @@ const getStateByCode = async (req, res) => {
 };
 
 
-
 // Get random fun fact for a state
 const getRandomFunFact = async (req, res) => {
     try {
-        const stateCode = req.params.state.toUpperCase(); // Ensure the state code is in uppercase
+        const stateCode = req.params.state.toUpperCase();
 
-        // Retrieve state data from local JSON file
         const localState = data.states.find(state => state.code === stateCode);
 
         if (!localState) {
             return res.status(404).json({ message: 'Invalid state abbreviation parameter' });
         }
 
-        // Retrieve fun facts for the state from MongoDB
+        // get fun facts for state from MongoDB
         const stateData = await State.findOne({ code: stateCode });
         if (!stateData || !stateData.funfacts || stateData.funfacts.length === 0) {
             return res.status(404).json({ message: `No Fun Facts found for ${localState.state}` });
@@ -116,26 +113,27 @@ const getRandomFunFact = async (req, res) => {
         const randomIndex = Math.floor(Math.random() * stateData.funfacts.length);
         const randomFunFact = stateData.funfacts[randomIndex];
 
-        // Send the response with the random fun fact
+        // Send response with the random ff
         res.status(200).json({ funfact: randomFunFact });
     } catch (error) {
         console.error('Error getting random fun fact:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 };
+
+
 // Get state capital
 const getStateCapital = async (req, res) => {
     try {
-        const stateCode = req.params.state.toUpperCase(); // Ensure the state code is in uppercase
+        const stateCode = req.params.state.toUpperCase();
 
-        // Retrieve state data from local JSON file
         const localState = require('../model/statesData.json').find(state => state.code === stateCode);
 
         if (!localState) {
             return res.status(404).json({ message: 'Invalid state abbreviation parameter' });
         }
 
-        // Send the response with state capital
+        // Send response with state capital
         res.status(200).json({ state: localState.state, capital: localState.capital_city });
     } catch (error) {
         console.error('Error getting state capital:', error);
@@ -143,19 +141,19 @@ const getStateCapital = async (req, res) => {
     }
 };
 
+
 // Get state nickname
 const getStateNickname = async (req, res) => {
     try {
-        const stateCode = req.params.state.toUpperCase(); // Ensure the state code is in uppercase
+        const stateCode = req.params.state.toUpperCase();
 
-        // Retrieve state data from local JSON file
         const localState = require('../model/statesData.json').find(state => state.code === stateCode);
 
         if (!localState) {
             return res.status(404).json({ message: 'Invalid state abbreviation parameter' });
         }
 
-        // Send the response with state nickname
+        // Send response with state nickname
         res.status(200).json({ state: localState.state, nickname: localState.nickname });
     } catch (error) {
         console.error('Error getting state nickname:', error);
@@ -163,22 +161,23 @@ const getStateNickname = async (req, res) => {
     }
 };
 
+
 // Get state population
 const getStatePopulation = async (req, res) => {
     try {
-        const stateCode = req.params.state.toUpperCase(); // Ensure the state code is in uppercase
+        const stateCode = req.params.state.toUpperCase();
 
-        // Retrieve state data from local JSON file
+        // Get local state data from JSON
         const localState = require('../model/statesData.json').find(state => state.code === stateCode);
 
         if (!localState) {
             return res.status(404).json({ message: 'Invalid state abbreviation parameter' });
         }
 
-        // Format population with correct comma placement
+        // Format comma placement
         const formattedPopulation = localState.population.toLocaleString();
 
-        // Send the response with state population
+        // Send response with state population
         res.status(200).json({ state: localState.state, population: formattedPopulation });
     } catch (error) {
         console.error('Error getting state population:', error);
@@ -190,23 +189,21 @@ const getStatePopulation = async (req, res) => {
 // Get state admission date
 const getStateAdmissionDate = async (req, res) => {
     try {
-        const stateCode = req.params.state.toUpperCase(); // Ensure the state code is in uppercase
+        const stateCode = req.params.state.toUpperCase();
 
-        // Retrieve state data from local JSON file
         const localState = require('../model/statesData.json').find(state => state.code === stateCode);
 
         if (!localState) {
             return res.status(404).json({ message: 'Invalid state abbreviation parameter' });
         }
 
-        // Send the response with state admission date under the key "admitted"
+        // Send response with state admission date
         res.status(200).json({ state: localState.state, admitted: localState.admission_date });
     } catch (error) {
         console.error('Error getting state admission date:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 };
-
 
 
 // Add a fun fact
@@ -230,19 +227,19 @@ const addFunFact = async (req, res) => {
             return res.status(400).json({ message: 'State fun facts value required' });
         }
 
-        // Update the MongoDB collection
+        // Update states collection
         const updatedState = await State.findOneAndUpdate(
             { code: stateCode },
             { $push: { funfacts: { $each: funfacts } } },
             { new: true, upsert: true }
         );
 
-        // Check if the state has at least 4 properties
+        // Check if state has at least 4 properties
         if (!updatedState) {
             return res.status(404).json({ message: 'State not found.' });
         }
 
-        // Send the response in the desired format
+        // Send funfact response
         const response = {
             "_id": updatedState._id,
             "stateCode": updatedState.code,
@@ -258,8 +255,6 @@ const addFunFact = async (req, res) => {
 };
 
 
-
-
 const updateFunFact = async (req, res) => {
     try {
         const stateCode = req.params.state;
@@ -271,40 +266,40 @@ const updateFunFact = async (req, res) => {
             return res.status(400).json({ message: 'State fun fact index value required' });
         }
 
-        // Check if new fun fact is provided and is a non-empty string
+        // Check if new fun fact is a non-empty string
         if (!newFunFact || typeof newFunFact !== 'string' || newFunFact.trim() === '') {
             return res.status(400).json({ message: 'State fun fact value required' });
         }
 
-        // Adjust the index to be zero-based
+        // index is zero-based
         const adjustedIndex = index - 1;
 
-        // Find the state by code
+        // Find state by code
         const state = await State.findOne({ code: stateCode });
 
         // If state not found, return error message
         if (!state) {
-            // Retrieve the state name from the local JSON file
+            // Get state name from local JSON
             const localState = require('../model/statesData.json').find(state => state.code === stateCode);
             const stateName = localState ? localState.state : stateCode;
             return res.status(404).json({ message: `No Fun Facts found for ${stateName}` });
         }
 
-        // Check if the state has fun facts
+        // Check if state has fun facts
         if (!state.funfacts || state.funfacts.length === 0) {
             return res.status(404).json({ message: `No Fun Facts found for ${state.state}` });
         }
 
-        // Check if the provided index is valid
+        // Check index is valid
         if (adjustedIndex < 0 || adjustedIndex >= state.funfacts.length) {
             return res.status(404).json({ message: `No Fun Fact found at that index for ${state.state}` });
         }
 
-        // Update the fun fact at the specified index
+        // Update fun fact at index
         state.funfacts[adjustedIndex] = newFunFact;
         await state.save();
 
-        // Send the updated state with fun facts
+        // Send updated state with fun facts
         res.status(200).json(state);
     } catch (error) {
         console.error('Error updating fun fact:', error);
@@ -312,30 +307,24 @@ const updateFunFact = async (req, res) => {
     }
 };
 
-
-
-
 const deleteFunFact = async (req, res) => {
     try {
 
         let index = req.body.index;
 
-        // Check if index is provided
         if (!index) {
             return res.status(400).json({ message: 'State fun fact index value required' });
         }
 
-        // Adjust the index to be zero-based
         index--;
 
         const stateCode = req.params.state;
 
-        // Retrieve the state from MongoDB
         let state = await State.findOne({ code: stateCode });
 
         // Check if state exists in MongoDB
         if (!state) {
-            // Retrieve the full state name from local statesData.json
+            // get full state name from local statesData.json
             const stateData = data.states.find(state => state.code === stateCode);
             const stateName = stateData ? stateData.state : stateCode;
             return res.status(404).json({ message: `No Fun Facts found for ${stateName}` });
@@ -343,19 +332,19 @@ const deleteFunFact = async (req, res) => {
 
         // Check if index is valid
         if (index < 0 || index >= state.funfacts.length) {
-            // Retrieve the full state name from local statesData.json
+            // get full state name from local statesData.json
             const stateData = data.states.find(state => state.code === stateCode);
             const stateName = stateData ? stateData.state : stateCode;
             return res.status(404).json({ message: `No Fun Fact found at that index for ${stateName}` });
         }
 
-        // Remove the fun fact at the specified index
+        // Remove fun fact at index
         state.funfacts.splice(index, 1);
 
-        // Save the updated state
+        // Save updated state
         state = await state.save();
 
-        // Send a success response
+        // Success Response
         res.status(200).json({ message: 'Fun fact deleted successfully.', state });
     } catch (error) {
         console.error('Error deleting fun fact:', error);
@@ -364,10 +353,6 @@ const deleteFunFact = async (req, res) => {
 };
 
 
-
-
-
-// Export only the functions
 module.exports = {
     getAllStates,
     getStatesByContiguity,

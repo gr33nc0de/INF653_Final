@@ -1,8 +1,0 @@
-20240506	14:46:45	749f866d-58a5-440f-80dc-c2cb36165996	SyntaxError: Unexpected token '}', ..."funfact":
-}" is not valid JSON
-20240506	14:49:56	b984cd6e-de97-4975-9dc7-df680f5c7698	SyntaxError: Unexpected token '}', ..."funfact":
-}" is not valid JSON
-20240506	15:48:19	ea9eb1b1-f99b-45ca-96f7-26d9c4d53d90	SyntaxError: Expected double-quoted property name in JSON at position 18
-20240506	19:17:18	9fa8330e-3197-4771-af38-4174e3e814b3	SyntaxError: Expected double-quoted property name in JSON at position 18
-20240506	19:21:49	ef4fa8bb-69a5-49f7-a9f3-f7b00979fa8c	SyntaxError: Expected double-quoted property name in JSON at position 18
-20240506	19:25:48	0c5d91c4-2f40-40e7-b0c1-5526b5385071	SyntaxError: Expected double-quoted property name in JSON at position 19

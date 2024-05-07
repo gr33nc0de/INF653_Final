@@ -1,14 +1,14 @@
 const verifyStates = (req, res, next) => {
     const allowedStates = statesData.map(state => state.code.toUpperCase()); // Step 1 and 2
-    const stateCode = req.params.state.toUpperCase(); // Step 5
+    const stateCode = req.params.state.toUpperCase(); 
 
-    const foundState = allowedStates.find(state => state === stateCode); // Step 3
+    const foundState = allowedStates.find(state => state === stateCode);
 
-    if (!foundState) { // Step 4
-        return res.sendStatus(400).json({ error: 'Invalid state abbreviation' }); //error
+    if (!foundState) { 
+        return res.sendStatus(400).json({ error: 'Invalid state abbreviation' }); 
     }
 
-    req.stateCode = foundState; // Step 5
+    req.stateCode = foundState;
     next();
 };
 

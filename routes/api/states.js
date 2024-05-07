@@ -13,7 +13,7 @@ router.route('/')
 router.route('/:state')
     .get(statesController.getStateByCode);
 
-// Getting random fun fact for a state
+// Get random fun fact for a state
 router.route('/:state/funfact')
     .get(statesController.getRandomFunFact);
 
