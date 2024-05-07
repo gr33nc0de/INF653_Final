@@ -2,13 +2,12 @@ const express = require('express');
 const router = express.Router();
 const statesController = require('../../controllers/statesController');
 
+// Get states data based on contiguity
+router.get('/contig=:isContiguous', statesController.getStatesByContiguity);
+
 // Get all states data
 router.route('/')
     .get(statesController.getAllStates);
-
-// Get states data based on contiguity
-router.route('/')
-    .get(statesController.getStatesByContiguity);
 
 // Get state data by state code
 router.route('/:state')

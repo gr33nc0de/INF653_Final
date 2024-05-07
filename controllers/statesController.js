@@ -35,10 +35,31 @@ const getAllStates = async (req, res) => {
     }
 };
 
-// Get random fun fact for a state
-async function getStatesByContiguity(req, res) {
-    // Implement function logic here
-}
+const getStatesByContiguity = async (req, res) => {
+    try {
+        const isContiguous = req.params.isContiguous; // Get the isContiguous parameter
+
+        // Retrieve all states from the local JSON file
+        const allStates = require('../model/statesData.json');
+
+        if (isContiguous === 'true') {
+            // Filter out AK and HI for contiguous states
+            const contiguousStates = allStates.filter(state => state.code !== 'AK' && state.code !== 'HI');
+            return res.status(200).json(contiguousStates);
+        } else if (isContiguous === 'false') {
+            // Filter out all states except AK and HI for non-contiguous states
+            const nonContiguousStates = allStates.filter(state => state.code === 'AK' || state.code === 'HI');
+            return res.status(200).json(nonContiguousStates);
+        } else {
+            return res.status(400).json({ message: 'Invalid isContiguous parameter value. Use true or false.' });
+        }
+    } catch (error) {
+        console.error('Error getting states by contiguity:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+
 
 
 // Get state data by state code
