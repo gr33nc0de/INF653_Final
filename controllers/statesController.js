@@ -292,6 +292,9 @@ const updateFunFact = async (req, res) => {
 
         // Check index is valid
         if (adjustedIndex < 0 || adjustedIndex >= state.funfacts.length) {
+            // Get state name from local JSON
+            const localState = require('../model/statesData.json').find(state => state.code === stateCode);
+            const stateName = localState ? localState.state : stateCode;
             return res.status(404).json({ message: `No Fun Fact found at that index for ${state.state}` });
         }
 
