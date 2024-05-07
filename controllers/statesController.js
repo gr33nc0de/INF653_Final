@@ -282,12 +282,12 @@ const updateFunFact = async (req, res) => {
             // Get state name from local JSON
             const localState = require('../model/statesData.json').find(state => state.code === stateCode);
             const stateName = localState ? localState.state : stateCode;
-            return res.status(404).json({ message: `No Fun Facts found for ${stateName}` });
+            return res.status(404).json({ message: `No Fun Facts found for ${stateName}`});
         }
 
         // Check if state has fun facts
         if (!state.funfacts || state.funfacts.length === 0) {
-            return res.status(404).json({ message: `No Fun Facts found for ${state.state}` });
+            return res.status(404).json({ message: `No Fun Facts found for ${state.state}`});
         }
 
         // Check index is valid
@@ -295,7 +295,7 @@ const updateFunFact = async (req, res) => {
             // Get state name from local JSON
             const localState = require('../model/statesData.json').find(state => state.code === stateCode);
             const stateName = localState ? localState.state : stateCode;
-            return res.status(404).json({ message: `No Fun Fact found at that index for ${state.state}` });
+            return res.status(404).json({ message: `No Fun Fact found at that index for ${state.state}`});
         }
 
         // Update fun fact at index
@@ -312,7 +312,6 @@ const updateFunFact = async (req, res) => {
 
 const deleteFunFact = async (req, res) => {
     try {
-
         let index = req.body.index;
 
         if (!index) {
@@ -347,8 +346,16 @@ const deleteFunFact = async (req, res) => {
         // Save updated state
         state = await state.save();
 
+        // Construct the response object
+        const response = {
+            _id: state._id,
+            stateCode: state.code,
+            funfacts: state.funfacts,
+            __v: state.__v
+        };
+
         // Success Response
-        res.status(200).json({ message: 'Fun fact deleted successfully.', state });
+        res.status(200).json(response);
     } catch (error) {
         console.error('Error deleting fun fact:', error);
         res.status(500).json({ error: 'Internal server error' });
