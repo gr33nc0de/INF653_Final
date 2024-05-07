@@ -33,3 +33,4 @@
 20240507	01:30:37	24cb0e5d-251e-4813-908b-e68561ca6c74	DELETE	undefined	/states/OR/funfact
 20240507	01:30:46	6f195458-558d-4bfe-9450-ec5f5ce02718	POST	undefined	/states/OR/funfact
 20240507	01:30:57	50554771-8e0f-4ad6-9eb7-4f68f6820faa	DELETE	undefined	/states/OR/funfact
+20240507	01:34:46	d730e297-f848-4dc5-9e5c-ea459cf93925	DELETE	undefined	/states/NE/funfact
